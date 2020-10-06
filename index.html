@@ -1,0 +1,174 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
+
+<title>Medical Dashboard</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="When birds and planes collide...">
+    <meta name="author" content="Jeffrey Shaffer">
+
+  <!-- <link rel="stylesheet" href="leapstrap.css" /> -->
+  <!-- <link rel="stylesheet" href="example.css" /> -->
+	
+	<script src="annyang.min.js"></script>
+	<script src="responsivevoice.js"></script>
+
+	<script src="https://public.tableausoftware.com/javascripts/api/tableau_v8.debug.js" type="text/javascript"></script> 
+	<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+  </head>
+
+  <body onload=initializeViz();>
+	
+    <h1><center>Medical Dashboard</center></h1>
+	<!-- <h3><font color=#000000><center>Meeting Month: <i>"May 2017"</i></center></font></h3> -->
+	<h3><center><i>(Requires Chrome and Webcam or Microphone)</center></i></h3>
+	<h3><center>Say "<i>Filter Medicine A</i>","<i>Start Over</i>","<i>Export</i><i>..... for more Voice commands, hover on information button.</i>"</center></h3>
+	<br>
+<div id="audio"></div>
+
+<center><div id=tableauViz></div></center>
+
+<script>
+if (annyang) {
+  //<h5><i>Visualization Created by <a href="https://twitter.com/hemangbhavasar" target="_blank"><span class="Name"><i>HEMANG //BHAVASAR	</i></span></a> 
+	//</i></h5> Previous Heading
+  // These are the voice commands in quotes followed by the function
+  var commands = {
+  'show all': function() { startover(); responsiveVoice.speak('showing all','UK English Male'); },
+	'export': function() { exportPDF(); responsiveVoice.speak('exporting','UK English Male'); },
+	'start over': function() { startover(); responsiveVoice.speak('starting over','UK English Male'); },
+	'Filter Medicine A': function() { filterMA(); responsiveVoice.speak('filtering Medicine A','UK English Male'); },
+	'Filter Medicine B': function() { filterMB(); responsiveVoice.speak('filtering Medicine B','UK English Male'); },
+	'Filter Medicine C': function() { filterMC(); responsiveVoice.speak('filtering Medicine C','UK English Male'); },
+	'Filter Medicine D': function() { filterMD(); responsiveVoice.speak('filtering Medicine D','UK English Male'); },
+  'Filter Medicine E': function() { filterME(); responsiveVoice.speak('filtering Medicine E','UK English Male'); },
+  'Select Medicine A': function() { selectMAS(); responsiveVoice.speak('selecting Medicine A','UK English Male'); },
+  'Select Medicine B': function() { selectMBS(); responsiveVoice.speak('selecting Medicine B','UK English Male'); },
+  'Select Medicine C': function() { selectMCS(); responsiveVoice.speak('selecting Medicine C','UK English Male'); },
+  'Select Medicine D': function() { selectMDS(); responsiveVoice.speak('selecting Medicine D','UK English Male'); },
+  'Select Medicine E': function() { selectMES(); responsiveVoice.speak('selecting Medicine E','UK English Male'); },  
+	'remove filter': function() { removeFilter(); responsiveVoice.speak('removing filter','UK English Male'); },
+ };
+  
+  // Add commands to annyang
+  annyang.addCommands(commands);
+
+  // Start listening.
+  annyang.start();
+}
+</script>
+
+<script>
+
+var viz, workbook, activeSheet, Worksheet, worksheet;;
+function initializeViz(){
+
+var placeholderDiv = document.getElementById("tableauViz");
+
+var url = "https://public.tableau.com/views/MedicalDashboard/MedicalDashboard?:embed=y&:display_count=yes&:showVizHome=no";
+
+var options = {
+   width: "1004px",   
+   height: "869px",
+   hideTabs: true,
+   hideToolbar: true,
+  onFirstInteractive: function () {
+  workbook = viz.getWorkbook();
+  activeSheet = workbook.getActiveSheet();
+}
+};
+  viz = new tableauSoftware.Viz(placeholderDiv, url, options);
+  
+  }
+
+responsiveVoice.speak('Hi. My name is Hemang. Welcome to Meeting. How can I help you?','UK English Male');
+
+
+// Select Medicine
+
+function showAll()
+{
+activeSheet.getWorksheets()[1].applyFilterAsync("Year", "", tableauSoftware.FilterUpdateType.REPLACE);
+activeSheet.getWorksheets()[0].applyFilterAsync("Medicine Name", "", tableauSoftware.FilterUpdateType.REPLACE);
+}
+
+function selectMAS()
+	{
+	activeSheet.getWorksheets()[0].selectMarksAsync('Medicine Name', 'Medicine A', 'REPLACE'); 
+	}	  
+
+function selectMBS()
+	{
+	activeSheet.getWorksheets()[0].selectMarksAsync('Medicine Name', 'Medicine B', 'REPLACE'); 
+	}	  
+   
+function selectMCS()
+	{
+	activeSheet.getWorksheets()[0].selectMarksAsync('Medicine Name', 'Medicine C', 'REPLACE'); 
+	}	    
+  
+function selectMDS()
+	{
+	activeSheet.getWorksheets()[0].selectMarksAsync('Medicine Name', 'Medicine D', 'REPLACE'); 
+	}	   
+
+function selectMES()
+	{
+	activeSheet.getWorksheets()[0].selectMarksAsync('Medicine Name', 'Medicine E', 'REPLACE'); 
+	}	    
+  
+//Filter Medicine
+
+function filterMA()
+{
+activeSheet.getWorksheets()[0].applyFilterAsync('Medicine Name', 'Medicine A', tableauSoftware.FilterUpdateType.REPLACE); 
+}
+
+function filterMB()
+{
+activeSheet.getWorksheets()[0].applyFilterAsync('Medicine Name', 'Medicine B', tableauSoftware.FilterUpdateType.REPLACE); 
+}
+
+function filterMC()
+{
+activeSheet.getWorksheets()[0].applyFilterAsync('Medicine Name', 'Medicine C', tableauSoftware.FilterUpdateType.REPLACE); 
+}
+
+function filterMD()
+{
+activeSheet.getWorksheets()[0].applyFilterAsync('Medicine Name', 'Medicine D', tableauSoftware.FilterUpdateType.REPLACE); 
+}
+
+function filterME()
+{
+activeSheet.getWorksheets()[0].applyFilterAsync('Medicine Name', 'Medicine E', tableauSoftware.FilterUpdateType.REPLACE); 
+}  
+  
+function removeFilter()
+{
+activeSheet.getWorksheets()[0].applyFilterAsync('Medicine Name', ['Medicine A', 'Medicine B', 'Medicine C', 'Medicine D'],tableauSoftware.FilterUpdateType.ALL); 
+}
+  
+//UI Control
+
+function exportPDF()
+{
+
+viz.showExportPDFDialog();
+}
+
+function startover()
+{
+
+viz.revertAllAsync();
+}
+
+</script>
+
+  </body>
+</html>
